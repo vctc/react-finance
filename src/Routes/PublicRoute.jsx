@@ -2,17 +2,16 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { isLogin } from '../Utils/CheckLogin';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const PublicRoute = ({ component: Component, restricted, ...meow }) => {
-  console.log('data', isLogin());
-  console.log('restricted', restricted);
+  const { isAuthenticated } = useAuth0();
 
   return (
     <Route
       {...meow}
       render={(props) =>
-        isLogin() && restricted ? (
+        isAuthenticated && restricted ? (
           <Redirect to="/dashboard" />
         ) : (
           <Component {...props} />

@@ -2,15 +2,19 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { isLogin } from '../Utils/CheckLogin';
+import { useAuth0 } from '@auth0/auth0-react';
 
-const PrivateRoute = ({ component: Component, ...meow }) => (
-  <Route
-    {...meow}
-    render={(props) =>
-      isLogin() ? <Component {...props} /> : <Redirect to="/signin" />
-    }
-  />
-);
+const PrivateRoute = ({ component: Component, ...meow }) => {
+  const { isAuthenticated } = useAuth0();
+
+  return (
+    <Route
+      {...meow}
+      render={(props) =>
+        isAuthenticated ? <Component {...props} /> : <Redirect to="/signin" />
+      }
+    />
+  );
+};
 
 export default PrivateRoute;
